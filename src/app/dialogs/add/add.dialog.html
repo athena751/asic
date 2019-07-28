@@ -1,0 +1,277 @@
+<div class="container">
+  <!--<h3 mat-dialog-title>Add new survey</h3>-->
+
+  <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+    <!--Financial Product for which the Licensee paid Grandfathered Remuneration during the Relevant Period:-->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header style="background-color:#63C3EA">
+        <mat-panel-title style="font-weight:bold">Q1. Product</mat-panel-title>
+        <mat-panel-description>
+          Information for the Financial Product for which the Licensee paid Grandfathered Remuneration during the Relevant Period
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" placeholder="The name of the Licensee" [(ngModel)]="data.licensee.name" name="lName" maxlength="10" required >
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput placeholder="The name of the Notice Respondent" [(ngModel)]="data.licensee.respondentName" name="lRespName">
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput placeholder="The email address of the Notice Respondent" [(ngModel)]="data.licensee.email" name="lEmail">
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput placeholder="The phone number of the Notice Respondent" [(ngModel)]="data.licensee.phoneNum" name="lPhone">
+          <mat-icon matSuffix>mode_edit</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput placeholder="The name of the financial product" [(ngModel)]="data.licensee.productName" name="lProductName">
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+    <br/><br/>
+    <!-- For the Relevant Period -->
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header style="background-color:#63C3EA">
+        <mat-panel-title style="font-weight:bold">Q2. Payment</mat-panel-title>
+        <mat-panel-description>
+          How much Grandfathered Remuneration has the Licensee paid in relation to the Financial Product? Your answer must be a value in Australian dollars.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p><strong>Tiered scale?</strong></p>
+      <div style="margin:1rem 0rem">
+        <button mat-button [class]="data.payment.isPaymentTiered?'tiered-button-clicked':'tiered-button'" (click)="data.payment.isPaymentTiered = true">Yes</button>&nbsp;&nbsp;
+        <button mat-button [class]="data.payment.isPaymentTiered?'tiered-button':'tiered-button-clicked'" (click)="data.payment.isPaymentTiered = false">No</button>
+      </div>
+      <div class="form" *ngIf="data.payment.isPaymentTiered" style="display:inline-block;width:90%">
+        <p>If the amount is calculated on a tiered basis, provide the following information:</p>
+        <table>
+          <colgroup></colgroup><colgroup></colgroup><colgroup></colgroup><colgroup></colgroup>
+          <thead><tr>
+              <th>&nbsp;</th>
+              <th><h2>Tier1</h2><p>$0 to  $10000</p></th>
+              <th><h2>Tier2</h2><p>$10001 to  $50000</p></th>
+              <th><h2>Tier3</h2><p>$10001 and above</p></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <th>Total funds under management (FUM) in each tier</th>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[0].sumFUM" name="p1FUM">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[1].sumFUM" name="p2FUM">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[2].sumFUM" name="p3FUM">
+              </mat-form-field></td>
+            </tr>
+            <tr>
+              <th>Total number of accounts in each tier</th>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[0].sumAccounts" name="p1Acc">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[1].sumAccounts" name="p2Acc">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[2].sumAccounts" name="p3Acc">
+              </mat-form-field></td>
+            </tr>
+            <tr>
+              <th>Total percentage of Grandfathered Remuneration payable in each tier</th>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[0].sumPerPayable" name="p1Per">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[1].sumPerPayable" name="p2Per">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[2].sumPerPayable" name="p3Per">
+              </mat-form-field></td>
+            </tr>
+            <tr>
+              <th>Total dollar value of Grandfathered Remuneration payable in each tier</th>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[0].sumDollarPayable" name="p1Dollar">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[1].sumDollarPayable" name="p2Dollar">
+              </mat-form-field></td>
+              <td><mat-form-field color="accent">
+                <input matInput [(ngModel)]="data.payment.tieredList[2].sumDollarPayable" name="p3Dollar">
+              </mat-form-field></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form" *ngIf="!data.payment.isPaymentTiered" style="width:90%">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" placeholder="If the amount is calculated as a percentage of an amount invested, what is that percentage? (For example, 0.25%.)" [(ngModel)]="data.payment.paymentPercent" name="payPercentageNum" maxlength="10" pattern="[0-9]{1,2}\.?[0-9]{0,2}" appCurrencyMask [decimalPrecision]="2" [prefixString]="''" [suffixString]="'%'" required>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+    <br/><br/>
+
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header style="background-color:#63C3EA">
+        <mat-panel-title style="font-weight:bold">Q3. Dealer</mat-panel-title>
+        <mat-panel-description>
+          For the Relevant Period, how many dealer groups did the Licensee pay Grandfathered Remuneration to?
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="form" style="width:90%">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" [(ngModel)]="data.dealerGroups" name="dealerGrpNum" maxlength="10" required >
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+    <br/><br/>
+
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header style="background-color:#63C3EA">
+        <mat-panel-title style="font-weight:bold">Q4. Client</mat-panel-title>
+        <mat-panel-description>
+          For the Relevant Period, in relation to how many client accounts did the Licensee pay Grandfathered Remuneration? 
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="form" style="width:90%">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" [(ngModel)]="data.clientAccs" name="clientAccNum" maxlength="10" required >
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+    <br/><br/>
+
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header style="background-color:#63C3EA">
+        <mat-panel-title style="font-weight:bold">Q5. Arrangement</mat-panel-title>
+        <mat-panel-description>
+          For the Relevant Period, has the Licensee terminated an arrangement under which the Grandfathered Remuneration in relation to the Financial Product is paid? Your answer must be either:
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p><mat-radio-group aria-label="Select an option" name="arrOptions" [(ngModel)]="data.arrangement.arrAnswer">
+        <mat-radio-button value="1">Yes</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value="2">No</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value="3">Arrangement terminated in relation to some but not all recipients of Grandfathered Remuneration; or</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-radio-button value="4">Arrangement was terminated prior to the Relevant Period.</mat-radio-button>
+      </mat-radio-group></p>
+      <ng-container *ngIf="data.arrangement.arrAnswer!=='2'">
+        <div class="form" style="width:90%">
+          <mat-form-field color="accent">
+            <input matInput #input class="form-control" [matDatepicker]="picker1" name="terminateDate" placeholder="What was the date an arrangement was first terminated?" [(ngModel)]="data.arrangement.firstTerminateDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="form" style="width:90%">
+          <mat-form-field color="accent">
+            <input matInput #input class="form-control" placeholder="For how many client accounts was the arrangement terminated?" [(ngModel)]="data.arrangement.terminateAccounts" name="tAccountNum" maxlength="10" required >
+            <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </div>
+        <p>Has the Licensee taken any steps to ensure the benefits of terminating the arrangement flow to affected account holders?</p>
+        <p><mat-radio-group aria-label="Select an option" name="hasSteps" [(ngModel)]="data.arrangement.isStepEnsured">
+          <mat-radio-button [value]="true">Yes</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button [value]="false">No</mat-radio-button>
+          </mat-radio-group></p>
+        <div *ngIf="data.arrangement.isStepEnsured">
+        <mat-card class="items" style="width:75%">
+          <mat-card-header class="items-head"><mat-card-title>
+            Describe the principal method the Licensee has taken to ensure the benefits flow to affected account holders. Your answer must be one of:
+          </mat-card-title></mat-card-header>
+          <mat-card-content class="items-body">
+          <mat-radio-group aria-label="Select an option" name="methodOptions" [(ngModel)]="data.arrangement.principalMethod">
+            <mat-radio-button value="1" style="margin-bottom:0.5rem">Fee reduction</mat-radio-button><br/>
+            <mat-radio-button value="2" style="margin-bottom:0.5rem">Increased rate of return</mat-radio-button><br/>
+            <mat-radio-button value="3" style="margin-bottom:0.5rem">Credit to clients' accounts</mat-radio-button><br/>
+            <mat-radio-button value="4" style="margin-bottom:0.5rem">Direct payment to account holders</mat-radio-button><br/>
+            <mat-radio-button value="5" style="margin-bottom:0.5rem">Payment to advice licensee to credit account holders</mat-radio-button><br/>
+            <mat-radio-button value="6" style="margin-bottom:0.5rem">Combination of the above (if you are using more than one of the above methods, describe the second most used method); or</mat-radio-button><br/>
+            <mat-radio-button value="7" style="margin-bottom:0.5rem">Other (if 'Other', please describe the steps in no more than 250 characters).</mat-radio-button> 
+          </mat-radio-group>
+          <textarea *ngIf="data.arrangement.principalMethod==7" placeholder="Enter your steps details." id="text" name="pmOtherText" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 75px;" [(ngModel)]="data.arrangement.pm_OtherText"></textarea>  
+          </mat-card-content></mat-card>
+          <div class="form" style="width:90%">
+            <mat-form-field color="accent">
+              <input matInput #input class="form-control" [matDatepicker]="picker2" placeholder="The date on which the mechanism for passing the benefit on to affected account holders was first applied" name="appliedDate" [(ngModel)]="data.arrangement.appliedDate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form" style="width:90%">
+            <mat-form-field color="accent">
+            <input matInput #input class="form-control" placeholder="The percentage of total accounts for which the mechanism for passing the benefits on to affected account holders was applied" [(ngModel)]="data.arrangement.accountPercent" name="arrAccPercent" maxlength="5" required>
+              <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-card *ngIf="!data.arrangement.isStepEnsured" class="items">
+          <mat-card-header class="items-head"><mat-card-title>
+            What is the Licensee's principal reason for not taking steps to ensure the benefits of terminating the arrangement flow to affected account holders? Your answer must be one of:
+          </mat-card-title><hr/></mat-card-header>
+          <mat-card-content class="items-body">
+          <mat-radio-group aria-label="Select an option" name="stepReasons" [(ngModel)]="data.arrangement.noStepReason">
+            <mat-radio-button value="1" style="margin-bottom:0.5rem">The Licensee's systems cannot process a rebate or another mechanism for passing the benefits on to affected account holders;</mat-radio-button><br/>
+            <mat-radio-button value="2" style="margin-bottom:0.5rem">The costs of adapting systems to pass the benefits on to affected account holders would be prohibitive;</mat-radio-button><br/>
+            <mat-radio-button value="3" style="margin-bottom:0.5rem">The Licensee considers it would not be in the best interests of account holders to pass on the benefits, for tax and/or social security reasons;</mat-radio-button><br/>
+            <mat-radio-button value="4" style="margin-bottom:0.5rem">Contractual issues between the Licensee and the party with which the arrangement has been terminated prevent the Licensee's passing the benefits on to affected account holders;</mat-radio-button><br/>
+            <mat-radio-button value="5" style="margin-bottom:0.5rem">The Licensee has decided not to pass the benefits on to on to affected account holders for commercial reasons;</mat-radio-button><br/>
+            <mat-radio-button value="6" style="margin-bottom:0.5rem">The Licensee has decided not to pass the benefits on to on to affected account holders as there is no legal requirement to do so; or</mat-radio-button><br/>
+            <mat-radio-button value="7" style="margin-bottom:0.5rem">Other (If 'other', please describe the Licensee's principal reason in no more than 250 characters).</mat-radio-button> 
+          </mat-radio-group>
+          <textarea *ngIf="data.arrangement.noStepReason==7" placeholder="Enter the Licensee's principal reason." id="text" name="nsrOtherText" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 75px;" [(ngModel)]="data.arrangement.nsr_OtherText"></textarea>  
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ng-container *ngIf="data.arrangement.arrAnswer==='2' || data.arrangement.arrAnswer==='3'">
+        <br/><br/>
+        <mat-card class="items">
+          <mat-card-header class="items-head"><mat-card-title>
+            What is the Licensee's principal reason for not terminating the arrangement under which Grandfathered Remuneration is paid? Your answer must be one of:
+          </mat-card-title><hr/></mat-card-header>
+          <mat-card-content class="items-body">
+          <mat-radio-group aria-label="Select an option" name="principalReasons" [(ngModel)]="data.arrangement.principalReason">
+            <mat-radio-button value="1" [checked]="true" style="margin-bottom:0.5rem">The Licensee would like to terminate the arrangement but has received legal advice that it cannot do so;</mat-radio-button><br/>
+            <mat-radio-button value="2" style="margin-bottom:0.5rem">The Licensee has terminated the arrangement with some dealer groups, but other dealer groups will not agree to a termination, and the Licensee has received legal advice that it cannot terminate the arrangement unilaterally;</mat-radio-button><br/>
+            <mat-radio-button value="3" style="margin-bottom:0.5rem">The Licensee has terminated the arrangement with some dealer groups, but other dealer groups will not agree to a termination, and the Licensee has not received any legal advice about whether it can terminate the arrangement unilaterally;</mat-radio-button><br/>
+            <mat-radio-button value="4" style="margin-bottom:0.5rem">The Licensee has decided not to terminate arrangements for commercial reasons;</mat-radio-button><br/>
+            <mat-radio-button value="5" style="margin-bottom:0.5rem">The Licensee has not terminated arrangements due to other priorities;</mat-radio-button><br/>
+            <mat-radio-button value="6" style="margin-bottom:0.5rem">The Licensee has not terminated arrangements as there is no legal requirement to do so; or</mat-radio-button><br/>
+            <mat-radio-button value="7" style="margin-bottom:0.5rem">Other (if 'other', please describe the Licensee's principal reason in no more than 250 characters).</mat-radio-button> 
+          </mat-radio-group>
+          <textarea *ngIf="data.arrangement.principalReason==7" placeholder="Enter the Licensee's principal reason." id="text" name="prOtherText" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 75px;" [(ngModel)]="data.arrangement.pr_OtherText"></textarea>  
+          </mat-card-content>
+        </mat-card>
+        <p>Does the Licensee intend to terminate the arrangement before 1 January 2021? Your answer must be one of:</p>
+        <p><mat-radio-group aria-label="Select an option" name="isBeforeDate" [(ngModel)]="data.arrangement.isBefore1Jan2021">
+          <mat-radio-button [value]="true" [checked]="true">Yes (if 'yes', estimate the date by which the last such arrangement will have been terminated); or</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <mat-radio-button [value]="false">No</mat-radio-button>
+        </mat-radio-group></p>
+        <p><mat-form-field>
+          <input matInput [matDatepicker]="picker3" placeholder="Choose a date" name="lastDate" [(ngModel)]="data.arrangement.estLastDate">
+          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field></p>
+      </ng-container>
+    </mat-expansion-panel>
+    <br/><br/><br/><br/>
+
+    <div mat-dialog-actions>
+      <button mat-button [type]="submit" [disabled]="!formControl.valid" (click)="confirmAdd()">Save</button>
+    </div>
+  </form>
+</div>

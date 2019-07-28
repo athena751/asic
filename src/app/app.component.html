@@ -1,0 +1,136 @@
+<mat-toolbar color="primary" style="height:120px;background-color:#253746">
+  <img src="assets/asic-logo-desktop-1.png"/>
+  <span class="spacer"></span>
+  Reload data:
+  <button mat-icon-button (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div style="padding:2rem"><app-add-dialog></app-add-dialog></div>
+
+<!--<div class="container mat-elevation-z8">
+
+  <div class="form">
+    <mat-form-field floatPlaceholder="never" color="accent">
+      <input matInput #filter placeholder="Filter issues">
+    </mat-form-field>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-cell">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+      <mat-cell *matCellDef="let row" >{{row.id}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.title}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="licensee">
+      <mat-header-cell *matHeaderCellDef mat-sort-header disabled>Licensee</mat-header-cell>
+      <mat-cell *matCellDef="let row" style="display:inline-block;font-size:0.8rem">
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Licensee name:</span>&nbsp;{{row.licensee.name}}</p>
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Notice Respondent name:</span>&nbsp;{{row.licensee.respondentName}}<br/></p>
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Email:</span>&nbsp;{{row.licensee.email}}</p>
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Phone:</span>&nbsp;{{row.licensee.phoneNum}}<br/></p>
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Product:</span>&nbsp;{{row.licensee.productName}}</p>
+        <p style="margin:0.2rem 0"><span style="font-weight:bold">Financial Product's APIR or SPIN:</span>&nbsp;{{row.licensee.referStr}}</p>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="payment">
+      <mat-header-cell *matHeaderCellDef mat-sort-header disabled>Payment</mat-header-cell>
+      <mat-cell *matCellDef="let row" style="display:inline-block">
+        <table class="payment-table" *ngIf="row.payment.isPaymentTiered">
+          <thead style="color:#fff"><tr>
+            <th style="width:20%;">&nbsp;</th><th style="width:20%;background-color:#0072CE;border-radius: .4em;">Total FUM</th><th style="background-color:#0072CE;border-radius: .4em;">Total Accounts #</th>
+            <th style="width:35%;background-color:#0072CE;border-radius: .4em;">Total %($) of Grandfathered Remuneration payable</th>
+          </tr></thead>
+          <tbody><tr *ngFor="let t of row.payment.tieredList; last as isLast">
+            <td>{{t.tieredMin | numComma}} <ng-container *ngIf="isLast">and above</ng-container><ng-container *ngIf="!isLast">to {{t.tieredMax | numComma}}</ng-container></td>
+            <td>{{t.sumFUM  | numComma}}</td>
+            <td>{{t.sumAccounts}}</td>
+            <td>
+              {{t.sumPerPayable | asicPercent}}&nbsp;&nbsp;({{t.sumDollarPayable | numComma}})
+            </td>
+          </tr></tbody>
+        </table>
+        <p *ngIf="!row.payment.isPaymentTiered">{{row.payment.paymentPercent | asicPercent}}</p>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dealerGroups">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Dealer groups</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.dealerGroups}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="clientAccs">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Client accounts</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.clientAccs}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="arrangement">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Arrangement details</mat-header-cell>
+      <mat-cell *matCellDef="let row" style="display:inline-block">
+        <p style="margin:0.2rem 0">{{row.arrangement.arrAnswer}}</p>
+        <table class="payment-table">
+          <thead style="background-color:#0072CE"><tr>
+            <th rowspan="2" style="border-radius: .4em;">First date</th>
+            <th rowspan="2" style="border-radius: .4em;">Client Accounts #</th>
+            <th colspan="3">Advanced steps</th>
+            <th rowspan="2" style="border-radius: .4em;">Principal reason</th>
+            <th rowspan="2" style="border-radius: .4em;">Est date</th>
+          </tr><tr>
+            <th>Steps</th>
+            <th>First applied date</th>
+            <th>Applied accounts percentage</th>
+          </tr></thead>
+          <tbody>
+            <td>{{row.arrangement.firstTerminateDate}}</td>
+            <td>{{row.arrangement.terminateAccounts}}</td>
+            <td>{{row.arrangement.principalMethod}}</td>
+            <td>{{row.arrangement.appliedDate}}</td>
+            <td>{{row.arrangement.accountPercent | asicPercent}}</td>
+            <td>{{row.arrangement.noStepReason}}</td>
+            <td>{{row.arrangement.estLastDate}}</td>
+          </tbody>
+        </table>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef disabled>
+        <button mat-icon-button color="primary" (click)="addNew()">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
+          <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">
+          <mat-icon aria-label="Delete">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    No results
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>-->

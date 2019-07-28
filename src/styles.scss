@@ -1,0 +1,100 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import url('//fonts.googleapis.com/icon?family=Material+Icons');
+@import '_global';
+
+@include mat-core();
+
+$primary: mat-palette($mat-indigo, 500);
+$accent:  mat-palette($mat-pink, 500, A200, A400);
+$warn:    mat-palette($mat-red, 500);
+
+$config: mat-typography-config();
+
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+
+body {
+  font-family: mat-font-family($config);
+  font-weight: normal;
+  margin: 0;
+}
+
+#vg-input {
+  margin-bottom:1rem;
+}
+
+#vg-text-input i, #vg-input i {
+  color:#51988D;
+}
+
+@mixin vgInputCommon {
+  border: 0;
+  border-bottom: 2px solid map-get($vg-colors, "light_grey");
+  background: transparent;
+  color: map-get($vg-colors, "grey");
+  padding: 10px;
+}
+
+#vg-text-input input {
+  @include vgInputCommon;
+  text-align: center !important;
+}
+
+#vg-input input {
+  @include vgInputCommon;
+  text-align: left !important;
+  padding-left: 0;
+}
+
+#vg-text-input input:focus,
+#vg-input input:focus {
+  outline:0;
+  border:0;
+  border-bottom: 2px solid map-get($vg-colors, "light_blue");
+}
+
+.vg-input-error-border-bottom {
+  outline:0 !important;
+  border:0 !important;
+  border-bottom: 2px solid map-get($vg-colors, "red") !important;
+}
+
+#vg-text-input input:hover:not(:focus),
+#vg-input input:hover:not(:focus) {
+  outline:0;
+  border:0;
+  border-bottom: 2px solid map-get($vg-colors, "black");
+}
+
+#vg-text-input input::placeholder,
+#vg-input input::placeholder {
+  color: map-get($vg-colors, "light_grey");
+}
+
+.tiered-button {
+  height: 50px;
+  width: 125px;
+  border: 1px solid rgba(128,128,128,0.25);
+  border-radius: 4px;
+  box-shadow: 0 12px 13px 0 rgba(68,105,125,0.05);
+}
+
+.tiered-button-clicked {
+  height: 50px;
+  width: 125px;
+  color: map-get($vg-colors, "white");
+  background-color: map-get($vg-colors, "light_blue");
+  border: 1px solid rgba(128,128,128,0.25);
+  border-radius: 4px;
+  box-shadow: 0 12px 13px 0 rgba(68,105,125,0.05);
+}
+
+.bg-light-blue {
+  background-color: map-get($vg-colors, "light_blue");
+}
+
+.no-padding {
+  padding: 0px !important;
+}

@@ -1,0 +1,52 @@
+# Build file for Vanguard ETF Managed Fund Calculator UI
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - deploy
+
+variables:
+  AWS_DEFAULT_REGION: ap-southeast-2
+  DOCKER_DRIVER: overlay2
+
+build:
+  stage: build
+  tags:
+    - docker
+  image: node:11
+  before_script:
+    - npm install
+  script:
+    - ./node_modules/.bin/ng build --aot --prod
+  artifacts:
+    paths:
+      - dist/
+
+deploy-stage:
+  stage: deploy
+  tags:
+    - docker
+  image: awsudo/awsudo
+  
+  script:
+    - awsudo arn:aws:iam::176074936288:role/gitlab@assumerole aws s3 rm s3://vanguard-etf-mff-test --recursive
+    - awsudo arn:aws:iam::176074936288:role/gitlab@assumerole aws s3 cp dist/ s3://vanguard-etf-mff-test --recursive
+  environment: staging
+
+deploy-prod:
+  stage: deploy
+  tags:
+    - docker
+  image: awsudo/awsudo
+
+  script:
+    - awsudo arn:aws:iam::810041495773:role/gitlab@assumerole aws s3 rm s3://vanguard-etf-mff-prod --recursive
+    - awsudo arn:aws:iam::810041495773:role/gitlab@assumerole aws s3 cp dist/ s3://vanguard-etf-mff-prod --recursive
+  environment: production
+  only:
+    - develop
+  when: manual
+
